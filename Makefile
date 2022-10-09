@@ -7,7 +7,7 @@ TASK=kernel.bin
 create-build:
 	mkdir -p $(BUILD)
 
-build: $(BUILD)$(TASK) | create-build
+build: create-build
 	@$(DASM) src/main.asm -I$(DASM_INC) -f3 -v5 -o$(BUILD)$(TASK)
 
 .PHONY: build
