@@ -4,7 +4,10 @@ DASM_INC=$(DASM_HOME)/machines/atari2600
 BUILD=./build/
 TASK=kernel.bin
 
-build: 
+create-build:
+	mkdir -p $(BUILD)
+
+build: $(BUILD)$(TASK) | create-build
 	@$(DASM) src/main.asm -I$(DASM_INC) -f3 -v5 -o$(BUILD)$(TASK)
 
 .PHONY: build
