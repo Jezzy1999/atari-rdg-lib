@@ -12,6 +12,8 @@ SpriteXPosition ds 1
         ORG $F000
 
 Reset
+	lda #$56
+	sta COLUP0
 StartOfFrame
 
 ; Start of vertical blank processing
