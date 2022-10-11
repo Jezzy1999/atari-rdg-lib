@@ -3,7 +3,12 @@
         include "vcs.h"
         include "macro.h"
 
-        SEG
+	SEG.U vars
+	ORG $80
+
+SpriteXPosition ds 1
+
+        SEG code
         ORG $F000
 
 Reset
