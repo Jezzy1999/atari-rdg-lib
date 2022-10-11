@@ -52,6 +52,28 @@ StartOfFrame
 
         jmp StartOfFrame
 
+Divide15
+.POS	SET 0
+	REPEAT 256
+	.byte (.POS / 15) + 1
+.POS	SET .POS + 1
+	REPEND
+
+PositionSprite
+
+        sta WSYNC
+
+        ; Pass X register holding desired X position of sprite!
+
+        lda Divide15,x			; xPosition / 15
+        tax
+SimpleLoop
+	dex
+        bne SimpleLoop
+
+        sta RESP0			; start drawing the sprite
+        rts
+
         ORG $FFFA
 
         .word Reset          ; NMI
