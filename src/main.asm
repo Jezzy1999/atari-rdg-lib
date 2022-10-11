@@ -30,12 +30,25 @@ StartOfFrame
 
         lda #0
         sta VSYNC           
+	sta COLUBK
 
 ; 37 scanlines of vertical blank...
 
         REPEAT 37; scanlines
         sta WSYNC
         REPEND
+
+	ldx #1
+	stx GRP0                ; modify sprite 0 shape
+
+	inc SpriteXPosition
+	ldx SpriteXPosition
+	cpx #160
+	bcc LT160
+	ldx #0
+	stx SpriteXPosition
+LT160
+	jsr PositionSprite
 
         ; 192 scanlines of picture...
 	REPEAT 192
