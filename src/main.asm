@@ -37,15 +37,9 @@ StartOfFrame
         sta WSYNC
         REPEND
 
-	ldx #0
-
         ; 192 scanlines of picture...
 	REPEAT 192
-
-	inx
-	stx COLUBK
 	sta WSYNC
-
 	REPEND
 
         lda #%01000010
