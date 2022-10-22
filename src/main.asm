@@ -12,6 +12,14 @@ SpriteXPosition ds 1
         ORG $F000
 
 Reset
+; Clear RAM and all TIA registers
+
+	ldx #0
+	lda #0
+Clear   sta 0,x
+	inx
+	bne Clear
+
 	lda #$56
 	sta COLUP0
 StartOfFrame
