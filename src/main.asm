@@ -22,6 +22,9 @@ Clear   sta 0,x
 
 	lda #$56
 	sta COLUP0
+
+	ldx #$80
+	stx GRP0                ; modify sprite 0 shape
 StartOfFrame
 
 ; Start of vertical blank processing
