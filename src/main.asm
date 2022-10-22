@@ -91,11 +91,11 @@ PositionSprite
 
         ; Pass X register holding desired X position of sprite!
 
-        lda Divide15,x			; xPosition / 15
-        tax
+        ;lda Divide15,x			; xPosition / 15
+        ;tax
 SimpleLoop
-	dex
-        bne SimpleLoop
+	;dex
+        ;bne SimpleLoop
 
         sta RESP0			; start drawing the sprite
         rts
