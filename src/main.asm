@@ -64,7 +64,7 @@ LT160
 	jsr PositionSprite
 
         ; 192 scanlines of picture...
-	REPEAT 192
+	REPEAT 191
 	sta WSYNC
 	REPEND
 
