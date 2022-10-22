@@ -51,8 +51,6 @@ StartOfFrame
         sta WSYNC
         REPEND
 
-	ldx #1
-	stx GRP0                ; modify sprite 0 shape
 
 	inc SpriteXPosition
 	ldx SpriteXPosition
