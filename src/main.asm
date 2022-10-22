@@ -41,9 +41,11 @@ StartOfFrame
         sta WSYNC
         sta WSYNC
 
+	lda SWCHA
+	sta COLUBK
+
         lda #0
         sta VSYNC           
-	sta COLUBK
 
 ; 37 scanlines of vertical blank...
 
