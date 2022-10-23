@@ -12,8 +12,19 @@ SpriteXPosition ds 1
         ORG $F000
 
 Reset
+; Clear RAM and all TIA registers
+
+	ldx #0
+	lda #0
+Clear   sta 0,x
+	inx
+	bne Clear
+
 	lda #$56
 	sta COLUP0
+
+	ldx #$80
+	stx GRP0                ; modify sprite 0 shape
 StartOfFrame
 
 ; Start of vertical blank processing
@@ -30,9 +41,11 @@ StartOfFrame
         sta WSYNC
         sta WSYNC
 
+	lda SWCHA
+	sta COLUBK
+
         lda #0
         sta VSYNC           
-	sta COLUBK
 
 ; 37 scanlines of vertical blank...
 
@@ -40,8 +53,6 @@ StartOfFrame
         sta WSYNC
         REPEND
 
-	ldx #1
-	stx GRP0                ; modify sprite 0 shape
 
 	inc SpriteXPosition
 	ldx SpriteXPosition
@@ -53,7 +64,7 @@ LT160
 	jsr PositionSprite
 
         ; 192 scanlines of picture...
-	REPEAT 192
+	REPEAT 191
 	sta WSYNC
 	REPEND
 
@@ -80,11 +91,11 @@ PositionSprite
 
         ; Pass X register holding desired X position of sprite!
 
-        lda Divide15,x			; xPosition / 15
-        tax
+        ;lda Divide15,x			; xPosition / 15
+        ;tax
 SimpleLoop
-	dex
-        bne SimpleLoop
+	;dex
+        ;bne SimpleLoop
 
         sta RESP0			; start drawing the sprite
         rts
