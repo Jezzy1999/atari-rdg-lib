@@ -42,32 +42,29 @@ StartOfFrame
         lda #0
         sta VSYNC           
 
-; 37 scanlines of vertical blank...
+	lda SpriteXPosition
+        and #$7f
 
-        REPEAT 37; scanlines
         sta WSYNC
-        REPEND
+	sta HMCLR
 
+	sec
+DivLoop:
+	sbc #15
+	bcs DivLoop
 
-	inc SpriteXPosition
-	ldx SpriteXPosition
-	cpx #160
-	bcc LT160
-	ldx #0
-	stx SpriteXPosition
-LT160
-	jsr PositionSprite
+	eor #7
+	asl
+	asl
+	asl
+	asl
 
-        ; 192 scanlines of picture...
-	REPEAT 191
+	sta HMP0
+	sta RESP0
 	sta WSYNC
-	REPEND
+	sta HMOVE
 
-        lda #%01000010
-        sta VBLANK                     ; end of screen - enter blanking
-
-        ; 30 scanlines of overscan...
-        REPEAT 30
+        REPEAT 35; scanlines
         sta WSYNC
         REPEND
 
