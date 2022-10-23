@@ -39,9 +39,6 @@ StartOfFrame
         sta WSYNC
         sta WSYNC
 
-	lda SWCHA
-	sta COLUBK
-
         lda #0
         sta VSYNC           
 
