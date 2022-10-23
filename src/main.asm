@@ -29,10 +29,8 @@ StartOfFrame
 
 ; Start of vertical blank processing
 
-        lda #0
-        sta VBLANK
-
         lda #2
+        sta VBLANK
         sta VSYNC
 
 ; 3 scanlines of VSYNCH signal...
@@ -76,18 +74,21 @@ LT160
         sta WSYNC
         REPEND
 
-        jmp StartOfFrame
+        lda #0
+        sta VBLANK
 
-Divide15
-.POS	SET 0
-	REPEAT 256
-	.byte (.POS / 15) + 1
-.POS	SET .POS + 1
+        ; 160 scanlines of picture...
+	REPEAT 160
+	sta WSYNC
 	REPEND
 
-PositionSprite
+        lda #%01000010
+        sta VBLANK                     ; end of screen - enter blanking
 
+        ; 30 scanlines of overscan...
+        REPEAT 30
         sta WSYNC
+        REPEND
 
         ; Pass X register holding desired X position of sprite!
 
