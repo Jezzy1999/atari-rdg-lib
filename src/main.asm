@@ -87,16 +87,19 @@ LT160
         sta WSYNC
         REPEND
 
-        ; Pass X register holding desired X position of sprite!
+CheckLeft:
+        lda #%01000000
+        bit SWCHA
+        bne CheckRight
+	dec SpriteXPosition
 
-        ;lda Divide15,x			; xPosition / 15
-        ;tax
-SimpleLoop
-	;dex
-        ;bne SimpleLoop
-
-        sta RESP0			; start drawing the sprite
-        rts
+CheckRight:
+	lda #%10000000
+	bit SWCHA
+	bne NoInput
+	inc SpriteXPosition
+NoInput:
+        jmp StartOfFrame
 
         ORG $FFFA
 
