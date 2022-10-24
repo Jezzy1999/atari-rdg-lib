@@ -29,10 +29,8 @@ StartOfFrame
 
 ; Start of vertical blank processing
 
-        lda #0
-        sta VBLANK
-
         lda #2
+        sta VBLANK
         sta VSYNC
 
 ; 3 scanlines of VSYNCH signal...
@@ -41,30 +39,40 @@ StartOfFrame
         sta WSYNC
         sta WSYNC
 
-	lda SWCHA
-	sta COLUBK
-
         lda #0
         sta VSYNC           
 
-; 37 scanlines of vertical blank...
+	lda SpriteXPosition
+        and #$7f
 
-        REPEAT 37; scanlines
+        sta WSYNC
+	sta HMCLR
+
+	sec
+DivLoop:
+	sbc #15
+	bcs DivLoop
+
+	eor #7
+	asl
+	asl
+	asl
+	asl
+
+	sta HMP0
+	sta RESP0
+	sta WSYNC
+	sta HMOVE
+
+        REPEAT 35; scanlines
         sta WSYNC
         REPEND
 
+        lda #0
+        sta VBLANK
 
-	inc SpriteXPosition
-	ldx SpriteXPosition
-	cpx #160
-	bcc LT160
-	ldx #0
-	stx SpriteXPosition
-LT160
-	jsr PositionSprite
-
-        ; 192 scanlines of picture...
-	REPEAT 191
+        ; 160 scanlines of picture...
+	REPEAT 160
 	sta WSYNC
 	REPEND
 
@@ -76,29 +84,19 @@ LT160
         sta WSYNC
         REPEND
 
+CheckLeft:
+        lda #%01000000
+        bit SWCHA
+        bne CheckRight
+	dec SpriteXPosition
+
+CheckRight:
+	lda #%10000000
+	bit SWCHA
+	bne NoInput
+	inc SpriteXPosition
+NoInput:
         jmp StartOfFrame
-
-Divide15
-.POS	SET 0
-	REPEAT 256
-	.byte (.POS / 15) + 1
-.POS	SET .POS + 1
-	REPEND
-
-PositionSprite
-
-        sta WSYNC
-
-        ; Pass X register holding desired X position of sprite!
-
-        ;lda Divide15,x			; xPosition / 15
-        ;tax
-SimpleLoop
-	;dex
-        ;bne SimpleLoop
-
-        sta RESP0			; start drawing the sprite
-        rts
 
         ORG $FFFA
 
